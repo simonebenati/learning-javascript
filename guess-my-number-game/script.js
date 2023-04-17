@@ -12,32 +12,57 @@
 
 const random = Math.trunc(Math.random()*20)+1;
 
-document.querySelector('.number').textContent = random
+//document.querySelector('.number').textContent = random
+
 
 document.querySelector('.check').addEventListener('click', function() { 
 
-    let numberIsCorrect = false;
-    let guess = Number(document.querySelector('.guess').value);
-    if(guess < 1 || guess > 20){
-        alert(`your number is incorrect, please read 🤓`)
+
+    // When there is no input
+if (!(document.querySelector('.guess').value))
+    document.querySelector('.message').textContent = `⛔️ Please insert a number!`
+    // When player wins
+else if (Number(document.querySelector('.guess').value) === random){
+    document.querySelector('.message').textContent = `🏆 You won!`
+    document.querySelector('.highscore').textContent = document.querySelector('.score').textContent
+    document.querySelector('body').style.backgroundColor = '#60b347'
+    document.querySelector('.number').style.width = '30rem'
+}
+    //When guess is too high
+else if (Number(document.querySelector('.guess').value) > random){
+    if (Number(document.querySelector('.guess').value) > 20){
+        alert(`🤓 You can only insert numbers between 1 and 20, READ!`)
         return
     }
-
-    switch (guess) {
-        case 0:
-            document.querySelector('.message').textContent = '⛔️ No number was provided!';
-            break;
-        case random:
-            document.querySelector('.message').textContent = '🏆 You won!'
-            document.querySelector('.highscore').textContent = document.querySelector('.score').textContent 
-            break;
-        default:
-            document.querySelector('.message').textContent = '❌ Wrong guess!'
-            document.querySelector('.score').textContent = Number(document.querySelector('.score').textContent) - 1
-            if (guess > random) console.log(`Not quite there yet, try a lower number!`)
-            else if (guess < random) console.log(`Not quite there yet, try a higher number!`)
-            break;
+    document.querySelector('.message').textContent = `📈 Your number is too high!`
+    document.querySelector('.score').textContent = Number(document.querySelector('.score').textContent) - 1
+    if (Number(document.querySelector('.score').textContent) === 0){
+        document.querySelector('.message').textContent = `😢 You lost!`
+        document.querySelector('body').style.backgroundColor = '#ff0000'
+        setTimeout(() => { location.reload(); }, 2000);
     }
+}
+    // When Guess is too low.
+else if (Number(document.querySelector('.guess').value) < random) {
+    if (Number(document.querySelector('.guess').value) < 1){
+        alert(`🤓 You can only insert numbers between 1 and 20, READ!`)
+        return
+    }
+    document.querySelector('.message').textContent = `📉 Your Number is too low!`
+    document.querySelector('.score').textContent = Number(document.querySelector('.score').textContent) - 1
+    if (Number(document.querySelector('.score').textContent) === 0){
+        document.querySelector('.message').textContent = `😢 You lost!`
+        document.querySelector('body').style.backgroundColor = '#ff0000'
+        setTimeout(() => { location.reload(); }, 2000);
+        
+    }
+}
+
+
+
+// else if(Number(document.querySelector('.guess').value) > 20) {
+//     console.log(`entro nell'if`)
+// }
 
 });
 
