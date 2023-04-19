@@ -3,6 +3,7 @@
 //Functions
 function clearBoard () {
     score = 0;
+    scores = [0, 0]
     scorePlayer1.textContent = '0';
     scorePlayer2.textContent = '0';
     dice.classList.add('hidden');
@@ -20,9 +21,8 @@ function rollDices () {
     dice.classList.remove('hidden')
     if(random !== 1){
         score += random;
-        scores[activePlayer] = score;
-        document.getElementById(`current--${activePlayer}`).textContent = scores[activePlayer];
-        
+        document.getElementById(`current--${activePlayer}`).textContent = score;
+        console.log(score,scores)
     }
     else {
         score = 0;
@@ -35,12 +35,22 @@ function rollDices () {
 }
 
 function hold () {
-    document.getElementById(`score--${activePlayer}`).textContent = Number(document.getElementById(`score--${activePlayer}`).textContent) + score
-    score = 0;
-    document.querySelector(`.player--${activePlayer}`).classList.remove('player--active')
-    document.getElementById(`current--${activePlayer}`).textContent = score
-    activePlayer = (activePlayer === 0) ? 1 : 0;
-    document.querySelector(`.player--${activePlayer}`).classList.add('player--active')
+    if ((scores[activePlayer] + score) < 10) {
+        scores[activePlayer] += score
+        console.log(`active player ${activePlayer+1}`, scores[activePlayer])
+        document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer]
+        score = 0;
+        document.querySelector(`.player--${activePlayer}`).classList.remove('player--active')
+        document.getElementById(`current--${activePlayer}`).textContent = 0;
+        activePlayer = (activePlayer === 0) ? 1 : 0;
+        document.querySelector(`.player--${activePlayer}`).classList.add('player--active')
+    }
+    else if ((scores[activePlayer] + score) >= 10){
+        console.log(`scores > 10`)
+        document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer] + score
+        alert(`Player ${activePlayer+1} WON the game! 🏆`)
+        clearBoard()
+        }
 }
 
 
@@ -64,16 +74,9 @@ scorePlayer2.textContent = '0';
 dice.classList.add('hidden');
 let score = 0;
 let activePlayer = 0;
-const scores = [0, 0];
+let scores = [0, 0];
 
 newGameBtn.addEventListener('click', clearBoard);
 rollBtn.addEventListener('click', rollDices);
 holdBtn.addEventListener('click', hold);
-
-
-
-
-
-
-
 
