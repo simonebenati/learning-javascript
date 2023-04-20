@@ -35,7 +35,7 @@ function rollDices () {
 }
 
 function hold () {
-    if ((scores[activePlayer] + score) < 10) {
+    if ((scores[activePlayer] + score) < 100) {
         scores[activePlayer] += score
         console.log(`active player ${activePlayer+1}`, scores[activePlayer])
         document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer]
@@ -45,7 +45,7 @@ function hold () {
         activePlayer = (activePlayer === 0) ? 1 : 0;
         document.querySelector(`.player--${activePlayer}`).classList.add('player--active')
     }
-    else if ((scores[activePlayer] + score) >= 10){
+    else if ((scores[activePlayer] + score) >= 100){
         console.log(`scores > 10`)
         document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer] + score
         alert(`Player ${activePlayer+1} WON the game! 🏆`)
